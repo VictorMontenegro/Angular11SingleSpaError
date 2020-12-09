@@ -1,6 +1,6 @@
 Angular 11 Single SPA Error Example:
 
-1.- Make "npm install" at the root folder, inside microfrontends and microfrontends_angular_11.
+1.- Make "npm install" at the root folder, inside microfrontends, microfrontends_angular_11 and shell.
 
 2.- Execute on the terminal "npm start" in the root folder of the project.
 
