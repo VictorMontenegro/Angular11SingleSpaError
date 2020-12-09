@@ -1,0 +1,9 @@
+{
+  "name": "one-shell",
+  "scripts": {
+    "start": "concurrently --kill-others  \"cd shell & npm start\" \"cd microfrontends & npm start\""
+  },
+  "devDependencies": {
+    "concurrently": "^5.3.0"
+  }
+}

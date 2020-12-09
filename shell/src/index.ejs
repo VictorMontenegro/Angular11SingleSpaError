@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Shell</title>
+
+    <!-- 
+    This CSP allows any SSL-enabled host, but you should limit these directives further to increase your app's security.
+    Learn more about CSP policies at https://content-security-policy.com/#directive
+  -->
+    <!-- <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self' https: localhost:*; script-src 'unsafe-inline' https: localhost:*; connect-src https: localhost:* ws://localhost:*; style-src 'unsafe-inline' https:; object-src 'none';"> -->
+    <meta name="importmap-type" content="systemjs-importmap" />
+    <!-- If you wish to turn off import-map-overrides for specific environments (prod), uncomment the line below -->
+    <!-- More info at https://github.com/joeldenning/import-map-overrides/blob/master/docs/configuration.md#domain-list -->
+    <!-- <meta name="import-map-overrides-domains" content="denylist:prod.example.com" /> -->
+
+    <!-- Shared dependencies go into this import map. Your shared dependencies must be of one of the following formats:
+
+    1. System.register (preferred when possible) - https://github.com/systemjs/systemjs/blob/master/docs/system-register.md
+    2. UMD - https://github.com/umdjs/umd
+    3. Global variable
+
+    More information about shared dependencies can be found at https://single-spa.js.org/docs/recommended-setup#sharing-with-import-maps.
+  -->
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Sans&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      html,
+      body {
+        font-size: 16px;
+        height: 100vh;
+        width: 100vw;
+        padding: 0;
+        margin: 0;
+        font-family: "Fira Sans", sans-serif;
+      }
+
+      .shellGrid {
+        display: -ms-grid;
+        display: grid;
+        height: 100%;
+        width: 100%;
+        -ms-grid-columns: auto 1fr;
+        grid-template-columns: auto 1fr;
+        -ms-grid-rows: auto auto auto 1fr;
+        grid-template-rows: auto auto auto 1fr;
+      }
+
+      .shellSideBarGrid {
+        width: 150px;
+        -ms-grid-row: 2;
+        -ms-grid-column: 1;
+        -ms-grid-row-span: 3;
+        grid-column: 1;
+        grid-row-start: 2;
+        grid-row-end: span 3;
+        z-index: 10;
+        position: relative;
+      }
+
+      .shellSideBarGrid > div {
+        height: 100%;
+      }
+
+      .shellContainerGrid {
+        -ms-grid-row: 4;
+        -ms-grid-column: 2;
+        grid-column: 2;
+        grid-row: 4;
+        overflow-y: auto;
+        position: relative;
+        z-index: 1;
+      }
+
+      .shellContainerGrid > div {
+        display: flex;
+        height: 100%;
+      }
+
+      .shellContainerGrid > div > div:not(:empty) {
+        width: 100%;
+      }
+
+    </style>
+
+    <script type="systemjs-importmap">
+      {
+        "imports": {
+          "single-spa": "https://cdn.jsdelivr.net/npm/single-spa@5.5.5/lib/system/single-spa.min.js"
+        }
+      }
+    </script>
+    <link
+      rel="preload"
+      href="https://cdn.jsdelivr.net/npm/single-spa@5.5.5/lib/system/single-spa.min.js"
+      as="script"
+    />
+
+    <!-- Add your organization's prod import map URL to this script's src  -->
+    <!-- <script type="systemjs-importmap" src="/importmap.json"></script> -->
+
+    <% if (isLocal) { %>
+    <script type="systemjs-importmap">
+      {
+        "imports": {
+          "@wke/app1": "http://localhost:4200/main.js",
+          "@wke/app2": "http://localhost:4300/main.js",
+          "@wke/navbar": "http://localhost:4400/main.js",
+          "@wke/ng11": "http://localhost:4500/main.js",
+          "@wke/root-config": "http://localhost:9000/wke-root-config.js",
+
+          "@angular/compiler": "./node_modules/@angular/compiler/bundles/compiler.umd.js",
+          "@angular/core": "./node_modules/@angular/core/bundles/core.umd.js",
+          "@angular/common": "./node_modules/@angular/common/bundles/common.umd.js",
+          "@angular/router": "./node_modules/@angular/router/bundles/router.umd.js",
+          "@angular/platform-browser": "./node_modules/@angular/platform-browser/bundles/platform-browser.umd.js",
+          "@angular/platform-browser-dynamic": "./node_modules/@angular/core/bundles/platform-browser-dynamic.umd.js",
+
+          "rxjs": "./node_modules/rxjs/bundles/rxjs.umd.js",
+          "rxjs/operators": "https://unpkg.com/@esm-bundle/rxjs/system/rxjs-operators.min.js"
+        }
+      }
+    </script>
+    <% } %>
+
+    <script src="https://cdn.jsdelivr.net/npm/zone.js@0.10.3/dist/zone.min.js"></script>
+
+    <% if (isLocal) { %>
+    <script src="https://cdn.jsdelivr.net/npm/import-map-overrides@1.16.0/dist/import-map-overrides.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/systemjs@6.4.0/dist/system.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/systemjs@6.4.0/dist/extras/amd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/systemjs@6.4.0/dist/extras/named-exports.js"></script>
+    <% } else { %>
+    <script src="https://cdn.jsdelivr.net/npm/import-map-overrides@1.16.0/dist/import-map-overrides.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/systemjs@6.4.0/dist/system.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/systemjs@6.4.0/dist/extras/amd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/systemjs@6.4.0/dist/extras/named-exports.min.js"></script>
+    <% } %>
+
+    <template id="single-spa-layout">
+      <single-spa-router>
+        <div class="shellGrid" id="modal-full-lateral-container">
+          <div class="shellSideBarGrid">
+            <application name="@<%- orgName %>/navbar"></application>
+          </div>
+          <div id="modal-lateral-container" class="shellContainerGrid">
+            <div>
+              <route default>
+                <application name="@<%- orgName %>/app1"></application>
+                <application name="@<%- orgName %>/app2"></application>
+                <application name="@<%- orgName %>/ng11"></application>
+              </route>
+            </div>
+          </div>
+        </div>
+      </single-spa-router>
+    </template>
+  </head>
+
+  <body>
+    <script>
+      System.import("@wke/root-config");
+    </script>
+    <import-map-overrides-full show-when-local-storage="devtools" dev-libs>
+    </import-map-overrides-full>
+  </body>
+</html>

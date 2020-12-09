@@ -1,0 +1,133 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "appAngular11": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "less"
+        }
+      },
+      "root": "projects/app-angular11",
+      "sourceRoot": "projects/app-angular11/src",
+      "prefix": "appAngular11",
+      "architect": {
+        "build": {
+          "builder": "@angular-builders/custom-webpack:browser",
+          "options": {
+            "outputPath": "dist/appAngular11",
+            "index": "projects/app-angular11/src/index.html",
+            "main": "projects\\app-angular11\\src\\main.single-spa.ts",
+            "polyfills": "projects/app-angular11/src/polyfills.ts",
+            "tsConfig": "projects/app-angular11/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "projects/app-angular11/src/favicon.ico",
+              "projects/app-angular11/src/assets"
+            ],
+            "styles": [
+              "projects/app-angular11/src/styles.less"
+            ],
+            "scripts": [],
+            "customWebpackConfig": {
+              "path": "projects\\app-angular11\\extra-webpack.config.js",
+              "libraryName": "appAngular11",
+              "libraryTarget": "umd"
+            }
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/app-angular11/src/environments/environment.ts",
+                  "with": "projects/app-angular11/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "none",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-builders/custom-webpack:dev-server",
+          "options": {
+            "browserTarget": "appAngular11:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "appAngular11:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "appAngular11:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/app-angular11/src/test.ts",
+            "polyfills": "projects/app-angular11/src/polyfills.ts",
+            "tsConfig": "projects/app-angular11/tsconfig.spec.json",
+            "karmaConfig": "projects/app-angular11/karma.conf.js",
+            "assets": [
+              "projects/app-angular11/src/favicon.ico",
+              "projects/app-angular11/src/assets"
+            ],
+            "styles": [
+              "projects/app-angular11/src/styles.less"
+            ],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/app-angular11/tsconfig.app.json",
+              "projects/app-angular11/tsconfig.spec.json",
+              "projects/app-angular11/e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/app-angular11/e2e/protractor.conf.js",
+            "devServerTarget": "appAngular11:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "appAngular11:serve:production"
+            }
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "appAngular11"
+}
